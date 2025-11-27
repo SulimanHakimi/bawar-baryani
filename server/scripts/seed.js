@@ -4,9 +4,15 @@ const User = require('../models/User');
 const Product = require('../models/Product');
 const bcrypt = require('bcryptjs');
 
-dotenv.config({ path: '../.env' }); // Adjust path if needed, or run from server dir
+const path = require('path');
 
-mongoose.connect(process.env.MONGO_URI)
+// Load env vars
+dotenv.config({ path: path.resolve(__dirname, '../.env.local') });
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/bawar-bryani";
+
+mongoose.connect(MONGO_URI)
   .then(async () => {
     console.log('MongoDB Connected');
     

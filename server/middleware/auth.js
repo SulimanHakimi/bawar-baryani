@@ -20,6 +20,24 @@ const protect = async (req, res, next) => {
   }
 };
 
+// Optional auth - sets req.user if token exists, but doesn't block if no token
+const optionalAuth = async (req, res, next) => {
+  let token;
+
+  if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    try {
+      token = req.headers.authorization.split(' ')[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(decoded.id).select('-password');
+    } catch (error) {
+      // Token invalid, but we continue anyway for guest checkout
+      req.user = null;
+    }
+  }
+  
+  next(); // Always continue, even without token
+};
+
 const admin = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
     next();
@@ -28,4 +46,5 @@ const admin = (req, res, next) => {
   }
 };
 
-module.exports = { protect, admin };
+module.exports = { protect, optionalAuth, admin };
+

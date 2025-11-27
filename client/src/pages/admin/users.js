@@ -26,7 +26,7 @@ export default function AdminUsers() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/admin/users', config);
+      const { data } = await axios.get(`${process.env.API_URL}/admin/users`, config);
       setUsers(data);
       setLoading(false);
     } catch (error) {

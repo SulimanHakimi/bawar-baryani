@@ -14,7 +14,7 @@ export default function ProductDetails() {
   const fetchProduct = useCallback(async () => {
     if (!id) return;
     try {
-      const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+      const { data } = await axios.get(`${process.env.API_URL}/products/${id}`);
       setProduct(data);
       setLoading(false);
     } catch (error) {

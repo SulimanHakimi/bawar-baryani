@@ -32,7 +32,7 @@ export default function AdminMenu() {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get('http://localhost:5000/api/products');
+      const { data } = await axios.get(process.env.API_URL+'/products');
       setProducts(data);
       setLoading(false);
     } catch (error) {
@@ -46,7 +46,7 @@ export default function AdminMenu() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.delete(`http://localhost:5000/api/products/${id}`, config);
+      await axios.delete(`${process.env.API_URL}/products/${id}`, config);
       fetchProducts();
     } catch (error) {
       console.error('Error deleting product:', error);
@@ -67,9 +67,9 @@ export default function AdminMenu() {
 
     try {
       if (isEditing) {
-        await axios.put(`http://localhost:5000/api/products/${currentProduct._id}`, productData, config);
+        await axios.put(`${process.env.API_URL}/products/${currentProduct._id}`, productData, config);
       } else {
-        await axios.post('http://localhost:5000/api/products', productData, config);
+        await axios.post(process.env.API_URL+'/products', productData, config);
       }
       fetchProducts();
       resetForm();

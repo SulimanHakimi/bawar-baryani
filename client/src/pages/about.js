@@ -1,6 +1,6 @@
 import Layout from '@/components/Layout';
 import { motion } from 'framer-motion';
-
+import Image from 'next/image';
 export default function About() {
   return (
     <Layout 
@@ -11,7 +11,7 @@ export default function About() {
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-5xl font-serif font-bold mb-4"
+          className="text-5xl font-serif font-bold mb-4 text-white"
         >
           Our Story
         </motion.h1>
@@ -32,26 +32,33 @@ export default function About() {
               We honor the Pashtoon tradition of hospitality, welcoming every guest as family and serving food made with love, patience, and respect for our heritage.
             </p>
           </div>
-          <div className="bg-gray-200 h-96 rounded-xl flex items-center justify-center">
-            <span className="text-gray-400 text-xl">Traditional Kitchen Image</span>
+          <div className="relative bg-gray-200 h-96 rounded-xl overflow-hidden">
+            <Image
+                src="/about-image.jpg"
+                alt="Traditional Kitchen"
+                fill
+                objectFit="cover"
+                className="rounded-xl"
+            />
           </div>
+
         </div>
 
         <div className="bg-saffron/10 p-12 rounded-xl border-2 border-saffron mb-16">
           <h2 className="text-3xl font-serif font-bold text-center mb-8 text-maroon">Our Values</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="text-center">
-              <div className="text-4xl mb-4">🌾</div>
+              <div className="text-4xl mb-4"><i class="fa-solid fa-bowl-rice"></i></div>
               <h3 className="font-bold text-xl mb-2">Authenticity</h3>
               <p className="text-gray-600">Traditional recipes and cooking methods preserved for generations</p>
             </div>
             <div className="text-center">
-              <div className="text-4xl mb-4">❤️</div>
+              <div className="text-4xl mb-4"><i class="fa-solid fa-circle-check"></i></div>
               <h3 className="font-bold text-xl mb-2">Quality</h3>
               <p className="text-gray-600">Premium ingredients sourced with care and attention</p>
             </div>
             <div className="text-center">
-              <div className="text-4xl mb-4">🤝</div>
+              <div className="text-4xl mb-4"><i class="fa-solid fa-handshake"></i></div>
               <h3 className="font-bold text-xl mb-2">Hospitality</h3>
               <p className="text-gray-600">Every guest is treated as family in the Pashtoon tradition</p>
             </div>

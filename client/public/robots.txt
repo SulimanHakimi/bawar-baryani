@@ -3,5 +3,3 @@ Allow: /
 Disallow: /admin/
 Disallow: /profile
 Disallow: /checkout
-
-Sitemap: http://localhost:3000/sitemap.xml

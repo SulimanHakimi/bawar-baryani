@@ -11,14 +11,14 @@ const Footer = () => {
           <ul className="space-y-2 text-sm">
             <li><a href="/menu" className="hover:text-saffron">Menu</a></li>
             <li><a href="/about" className="hover:text-saffron">About Us</a></li>
-            <li><a href="/contact" className="hover:text-saffron">Contact</a></li>
+            <li><a href="/profile" className="hover:text-saffron">Profile</a></li>
           </ul>
         </div>
         <div>
           <h4 className="font-bold text-white mb-4">Contact</h4>
-          <p className="text-sm">123 Kabul Street, Afghan Market</p>
+          <p className="text-sm">Ahmad sha baba mina kabul Afghanistan 1012 Kabul, Afghanistan</p>
           <p className="text-sm">info@bawarbiryani.com</p>
-          <p className="text-sm">+93 700 123 456</p>
+          <p className="text-sm">+93 78 981 4740</p>
         </div>
       </div>
       <div className="text-center mt-8 pt-8 border-t border-gray-800 text-xs">

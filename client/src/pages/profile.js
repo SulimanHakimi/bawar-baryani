@@ -23,7 +23,7 @@ export default function Profile() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/orders/myorders', config);
+      const { data } = await axios.get(process.env.API_URL+'/orders/myorders', config);
       setOrders(data);
       setLoading(false);
     } catch (error) {

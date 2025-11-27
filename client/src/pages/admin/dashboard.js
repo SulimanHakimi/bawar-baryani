@@ -18,7 +18,7 @@ export default function AdminDashboard() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get('http://localhost:5000/api/admin/stats', config);
+      const { data } = await axios.get(process.env.API_URL+'/admin/stats', config);
       setStats(data);
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -64,15 +64,12 @@ export default function AdminDashboard() {
         {/* Main Content */}
         <main className="flex-1 p-8">
           <h1 className="text-3xl font-bold mb-8">Dashboard Overview</h1>
-          
-          {stats ? (
-            <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <div className="bg-white p-6 rounded-xl shadow border-l-4 border-maroon">
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-gray-500 text-sm">Total Revenue</p>
-                    <h3 className="text-2xl font-bold">{stats.totalRevenue.toFixed(2)} AFN</h3>
+                    <h3 className="text-2xl font-bold">{stats?.totalRevenue.toFixed(2)} AFN</h3>
                   </div>
                   <div className="bg-maroon/10 p-3 rounded-full text-maroon">
                     <FaChartLine size={24} />
@@ -83,7 +80,7 @@ export default function AdminDashboard() {
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-gray-500 text-sm">Total Orders</p>
-                    <h3 className="text-2xl font-bold">{stats.orderCount}</h3>
+                    <h3 className="text-2xl font-bold">{stats?.orderCount}</h3>
                   </div>
                   <div className="bg-saffron/10 p-3 rounded-full text-saffron">
                     <FaClipboardList size={24} />
@@ -94,7 +91,7 @@ export default function AdminDashboard() {
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-gray-500 text-sm">Total Users</p>
-                    <h3 className="text-2xl font-bold">{stats.userCount}</h3>
+                    <h3 className="text-2xl font-bold">{stats?.userCount}</h3>
                   </div>
                   <div className="bg-blue-100 p-3 rounded-full text-blue-500">
                     <FaUsers size={24} />
@@ -105,7 +102,7 @@ export default function AdminDashboard() {
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-gray-500 text-sm">Menu Items</p>
-                    <h3 className="text-2xl font-bold">{stats.productCount}</h3>
+                    <h3 className="text-2xl font-bold">{stats?.productCount}</h3>
                   </div>
                   <div className="bg-green-100 p-3 rounded-full text-green-500">
                     <FaBox size={24} />
@@ -137,10 +134,6 @@ export default function AdminDashboard() {
                 </ResponsiveContainer>
               </div>
             </div>
-            </>
-          ) : (
-            <div>Loading stats...</div>
-          )}
         </main>
       </div>
     </Layout>

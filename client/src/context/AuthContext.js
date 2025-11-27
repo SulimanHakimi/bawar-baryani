@@ -23,7 +23,7 @@ export const AuthProvider = ({ children }) => {
             Authorization: `Bearer ${token}`,
           },
         };
-        const { data } = await axios.get('http://localhost:5000/api/auth/profile', config);
+        const { data } = await axios.get(process.env.API_URL+'/auth/profile', config);
         setUser(data);
       } catch (error) {
         Cookies.remove('token');
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      const { data } = await axios.post(process.env.API_URL+'/auth/login', { email, password });
       Cookies.set('token', data.token, { expires: 30 });
       setUser(data);
       if (data.role === 'admin') {
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (name, email, password) => {
     try {
-      const { data } = await axios.post('http://localhost:5000/api/auth/register', { name, email, password });
+      const { data } = await axios.post(process.env.API_URL+'/auth/register', { name, email, password });
       Cookies.set('token', data.token, { expires: 30 });
       setUser(data);
       router.push('/');
