@@ -53,7 +53,6 @@ export default function ProductDetails() {
     }
     
     localStorage.setItem('cart', JSON.stringify(cart));
-    alert('Added to cart!');
   };
 
 
@@ -64,14 +63,13 @@ export default function ProductDetails() {
     <Layout title={`${product.name} | Bawar Biryani`}>
       <div className="container-custom py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-          <div className="bg-gray-200 rounded-xl h-96 flex items-center justify-center">
-             {/* Placeholder */}
-             <span className="text-2xl text-gray-400">{product.name} Image</span>
+          <div className="rounded-xl h-96 flex items-center justify-center">
+             <img src={product.image} alt={product.name} className="w-full h-full object-contain"/>
           </div>
           
           <div>
             <h1 className="text-4xl font-serif font-bold text-maroon mb-4">{product.name}</h1>
-            <p className="text-2xl font-bold text-gray-900 mb-6">${product.price.toFixed(2)}</p>
+            <p className="text-2xl font-bold text-gray-900 mb-6">{product.price.toFixed(2)} AFN</p>
             <p className="text-gray-600 mb-8 leading-relaxed">{product.description}</p>
             
             <div className="mb-8">

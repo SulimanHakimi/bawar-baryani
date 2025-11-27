@@ -7,20 +7,12 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { FaBox, FaUsers, FaClipboardList, FaChartLine } from 'react-icons/fa';
 
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
 export default function AdminDashboard() {
   const { user, loading: authLoading } = useAuth();
   const [stats, setStats] = useState(null);
   const router = useRouter();
-
-  useEffect(() => {
-    if (!authLoading) {
-      if (!user || user.role !== 'admin') {
-        router.push('/login');
-      } else {
-        fetchStats();
-      }
-    }
-  }, [user, authLoading]);
 
   const fetchStats = async () => {
     try {
@@ -32,6 +24,16 @@ export default function AdminDashboard() {
       console.error('Error fetching stats:', error);
     }
   };
+
+  useEffect(() => {
+    if (!authLoading) {
+      if (!user || user.role !== 'admin') {
+        router.push('/login');
+      } else {
+        fetchStats();
+      }
+    }
+  }, [user, authLoading]);
 
   if (authLoading || !user || user.role !== 'admin') return null;
 
@@ -64,12 +66,13 @@ export default function AdminDashboard() {
           <h1 className="text-3xl font-bold mb-8">Dashboard Overview</h1>
           
           {stats ? (
+            <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
               <div className="bg-white p-6 rounded-xl shadow border-l-4 border-maroon">
                 <div className="flex justify-between items-center">
                   <div>
                     <p className="text-gray-500 text-sm">Total Revenue</p>
-                    <h3 className="text-2xl font-bold">${stats.totalRevenue.toFixed(2)}</h3>
+                    <h3 className="text-2xl font-bold">{stats.totalRevenue.toFixed(2)} AFN</h3>
                   </div>
                   <div className="bg-maroon/10 p-3 rounded-full text-maroon">
                     <FaChartLine size={24} />
@@ -110,6 +113,31 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </div>
+
+            <div className="bg-white p-6 rounded-xl shadow mb-8">
+              <h3 className="text-xl font-bold mb-4">Sales Overview</h3>
+              <div className="h-80 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={[
+                    { name: 'Mon', sales: 4000 },
+                    { name: 'Tue', sales: 3000 },
+                    { name: 'Wed', sales: 2000 },
+                    { name: 'Thu', sales: 2780 },
+                    { name: 'Fri', sales: 1890 },
+                    { name: 'Sat', sales: 2390 },
+                    { name: 'Sun', sales: 3490 },
+                  ]}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="sales" stroke="#8884d8" activeDot={{ r: 8 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+            </>
           ) : (
             <div>Loading stats...</div>
           )}

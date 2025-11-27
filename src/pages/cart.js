@@ -7,16 +7,27 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
   const [total, setTotal] = useState(0);
 
+  const calculateTotal = (items) => {
+    const sum = items.reduce((acc, item) => {
+      if (!item?.product?.price) return acc;
+      return acc + (item.product.price * item.quantity);
+    }, 0);
+    setTotal(sum);
+  };
+
   useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const savedCart = JSON.parse(localStorage.getItem('cart') || '[]');
+    // Filter out invalid items
+    const cart = savedCart.filter(item => item && item.product && typeof item.product.price === 'number');
+    
+    // Update local storage if we filtered out items
+    if (cart.length !== savedCart.length) {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    
     setCartItems(cart);
     calculateTotal(cart);
   }, []);
-
-  const calculateTotal = (items) => {
-    const sum = items.reduce((acc, item) => acc + (item.product.price * item.quantity), 0);
-    setTotal(sum);
-  };
 
   const updateQuantity = (index, newQuantity) => {
     if (newQuantity < 1) return;
@@ -55,10 +66,10 @@ export default function Cart() {
             {cartItems.map((item, index) => (
               <div key={index} className="bg-white p-4 rounded-lg shadow flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 bg-gray-200 rounded-md"></div>
+                  <img className="w-16 h-16 bg-gray-200 rounded-md" src={item.product.image}/>
                   <div>
                     <h3 className="font-bold">{item.product.name}</h3>
-                    <p className="text-gray-500">${item.product.price.toFixed(2)}</p>
+                    <p className="text-gray-500">{item.product.price.toFixed(2)} AFN</p>
                   </div>
                 </div>
                 
@@ -90,15 +101,15 @@ export default function Cart() {
             <h3 className="text-xl font-bold mb-4">Order Summary</h3>
             <div className="flex justify-between mb-2">
               <span>Subtotal</span>
-              <span>${total.toFixed(2)}</span>
+              <span>{total.toFixed(2)} AFN</span>
             </div>
             <div className="flex justify-between mb-4">
-              <span>Tax (5%)</span>
-              <span>${(total * 0.05).toFixed(2)}</span>
+              <span>Delivery Fee</span>
+              <span>30.00 AFN</span>
             </div>
             <div className="border-t pt-4 flex justify-between font-bold text-lg mb-6">
               <span>Total</span>
-              <span>${(total * 1.05).toFixed(2)}</span>
+              <span>{(total + 30).toFixed(2)} AFN</span>
             </div>
             <Link href="/checkout" className="btn-primary w-full block text-center">
               Proceed to Checkout
