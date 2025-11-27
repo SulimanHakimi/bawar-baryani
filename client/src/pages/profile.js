@@ -43,7 +43,7 @@ export default function Profile() {
             <div className="bg-saffron/10 p-6 rounded-lg border border-saffron">
               <h3 className="font-bold text-maroon text-lg mb-2">My Points</h3>
               <p className="text-4xl font-bold text-maroon">{user.points}</p>
-              <p className="text-sm text-gray-600 mt-2">Earn 1 point for every $10 spent.</p>
+              <p className="text-sm text-gray-600 mt-2">Earn 1 point for every 100AFN spent.</p>
             </div>
             <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
               <h3 className="font-bold text-gray-700 text-lg mb-2">Account Info</h3>
@@ -79,12 +79,12 @@ export default function Profile() {
                   {order.items.map((item, i) => (
                     <div key={i} className="flex justify-between text-sm mb-1">
                       <span>{item.quantity}x {item.name}</span>
-                      <span>${(item.price * item.quantity).toFixed(2)}</span>
+                      <span>{(item.price * item.quantity).toFixed(2)}AFN</span>
                     </div>
                   ))}
                   <div className="flex justify-between font-bold mt-2 pt-2 border-t border-dashed">
                     <span>Total</span>
-                    <span>${order.totalAmount.toFixed(2)}</span>
+                    <span>{order.totalAmount.toFixed(2)}AFN</span>
                   </div>
                   {order.pointsEarned > 0 && (
                     <p className="text-xs text-green-600 mt-2">+ {order.pointsEarned} points earned</p>

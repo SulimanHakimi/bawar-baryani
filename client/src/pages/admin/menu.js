@@ -143,7 +143,7 @@ export default function AdminMenu() {
               <div key={product._id} className="bg-white p-4 rounded-lg shadow flex justify-between items-start">
                 <div>
                   <h3 className="font-bold">{product.name}</h3>
-                  <p className="text-sm text-gray-500">${product.price}</p>
+                  <p className="text-sm text-gray-500">{product.price}AFN</p>
                   <p className="text-xs text-gray-400">{product.category}</p>
                 </div>
                 <div className="flex space-x-2">
