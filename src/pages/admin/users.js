@@ -12,16 +12,6 @@ export default function AdminUsers() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    if (!authLoading) {
-      if (!user || user.role !== 'admin') {
-        router.push('/login');
-      } else {
-        fetchUsers();
-      }
-    }
-  }, [user, authLoading]);
-
   const fetchUsers = async () => {
     try {
       const token = Cookies.get('token');
@@ -34,6 +24,16 @@ export default function AdminUsers() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!authLoading) {
+      if (!user || user.role !== 'admin') {
+        router.push('/login');
+      } else {
+        fetchUsers();
+      }
+    }
+  }, [user, authLoading, router]);
 
   if (authLoading || !user || user.role !== 'admin') return null;
 
@@ -55,7 +55,7 @@ export default function AdminUsers() {
         <main className="flex-1 p-8">
           <h1 className="text-3xl font-bold mb-8">Manage Users</h1>
           
-          <div className="bg-white rounded-xl shadow overflow-hidden">
+          <div className="bg-white rounded-xl shadow overflow-hidden overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>

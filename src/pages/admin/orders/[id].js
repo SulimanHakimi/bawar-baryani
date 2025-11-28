@@ -13,21 +13,12 @@ export default function OrderDetails() {
   const router = useRouter();
   const { id } = router.query;
 
-  useEffect(() => {
-    if (!authLoading) {
-      if (!user || user.role !== 'admin') {
-        router.push('/login');
-      } else if (id) {
-        fetchOrderDetails();
-      }
-    }
-  }, [user, authLoading, id, router]);
-
   const fetchOrderDetails = async () => {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get(`${process.env.API_URL}/orders/${id}`, config);
+      const apiUrl = process.env.API_URL || '/api';
+      const { data } = await axios.get(`${apiUrl}/orders/${id}`, config);
       setOrder(data);
       setLoading(false);
     } catch (error) {
@@ -36,11 +27,22 @@ export default function OrderDetails() {
     }
   };
 
+  useEffect(() => {
+    if (!authLoading) {
+      if (!user || user.role !== 'admin') {
+        router.push('/login');
+      } else if (id) {
+        fetchOrderDetails();
+      }
+    }
+  }, [user, authLoading, id, router, fetchOrderDetails]);
+
   const updateStatus = async (status) => {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.put(`${process.env.API_URL}/orders/${id}/status`, { status }, config);
+      const apiUrl = process.env.API_URL || '/api';
+      await axios.put(`${apiUrl}/orders/${id}/status`, { status }, config);
       fetchOrderDetails();
     } catch (error) {
       console.error('Error updating status:', error);

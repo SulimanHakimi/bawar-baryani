@@ -65,7 +65,7 @@ const Navbar = ({ cartCount = 0 }) => {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden flex items-center space-x-4">
-          <Link href="/cart" className="relative hover:text-saffron transition-colors mr-2">
+          <Link href="/cart" className="relative hover:text-saffron transition-colors mr-4">
             <FaShoppingCart size={20} />
             {cartCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-black text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">

@@ -23,13 +23,13 @@ export default function About() {
           <div>
             <h2 className="text-3xl font-serif font-bold mb-6">The Bawar Tradition</h2>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Bawar Biryani was born from a deep love for Afghani Pashtoon culture and cuisine. Our name, "Bawar," means "belief" in Pashto, reflecting our unwavering commitment to authentic flavors and traditional cooking methods.
+              Bawar Biryani was born from a deep love for Afghan culture and cuisine. Our name “Bawar” means “belief” in Pashto — belief in real flavors, belief in slow cooking, and belief in gathering around the table like one big family.
             </p>
             <p className="text-gray-700 leading-relaxed mb-4">
-              Every dish we serve is prepared using recipes passed down through generations, with slow-cooked saffron rice, tender meats, and aromatic spices that transport you to the heart of Afghanistan.
+              Every dish is made the old way: layers of fragrant rice, tender meat, and hours of patient simmering — recipes handed down from our grandmothers. This biryani was made to be shared with friends — big plates, loud laughs, hands reaching everywhere. Come hungry, leave happy! ❤️
             </p>
             <p className="text-gray-700 leading-relaxed">
-              We honor the Pashtoon tradition of hospitality, welcoming every guest as family and serving food made with love, patience, and respect for our heritage.
+              In true Afghan spirit, we open our doors wide and welcome every guest as family. Here, food is love, love is loud, and second helpings are always waiting.
             </p>
           </div>
           <div className="relative bg-gray-200 h-96 rounded-xl overflow-hidden">

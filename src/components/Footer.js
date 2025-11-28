@@ -4,7 +4,7 @@ const Footer = () => {
       <div className="container-custom grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <h3 className="text-xl font-serif text-saffron mb-4">Bawar Biryani</h3>
-          <p className="text-sm">Taste the Pashtoon hearth — slow-cooked saffron biryani made with love and tradition.</p>
+          <p className="text-sm">Grab a Plate, Call Your Friends – Let’s Eat!</p>
         </div>
         <div>
           <h4 className="font-bold text-white mb-4">Quick Links</h4>

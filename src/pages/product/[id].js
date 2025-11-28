@@ -14,7 +14,8 @@ export default function ProductDetails() {
   const fetchProduct = useCallback(async () => {
     if (!id) return;
     try {
-      const { data } = await axios.get(`${process.env.API_URL}/products/${id}`);
+      const apiUrl = process.env.API_URL || '/api';
+      const { data } = await axios.get(`${apiUrl}/products/${id}`);
       setProduct(data);
       setLoading(false);
     } catch (error) {
@@ -61,7 +62,7 @@ export default function ProductDetails() {
 
   return (
     <Layout title={`${product.name} | Bawar Biryani`}>
-      <div className="container-custom py-12">
+      <div className="container-custom py-12 min-h-[80vh] ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="rounded-xl h-96 flex items-center justify-center">
              <img src={product.image} alt={product.name} className="w-full h-full object-contain"/>

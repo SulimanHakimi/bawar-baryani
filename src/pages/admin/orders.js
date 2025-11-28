@@ -64,7 +64,7 @@ export default function AdminOrders() {
         <main className="flex-1 p-8">
           <h1 className="text-3xl font-bold mb-8">Manage Orders</h1>
 
-          <div className="bg-white rounded-xl shadow overflow-hidden">
+          <div className="bg-white rounded-xl shadow overflow-hidden overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>

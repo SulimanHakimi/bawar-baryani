@@ -67,7 +67,7 @@ export default function Home() {
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}
             className="text-xl md:text-2xl mb-8 font-light">
-            Taste the Pashtoon hearth — slow‑cooked saffron biryani made with love and tradition.
+            This biryani was made to be shared with friends — big plates, loud laughs, hands reaching everywhere. Come hungry, leave happy!
           </motion.p>
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.4 }}>
             <Link href="/menu" className="btn-primary text-lg px-8 py-3 rounded-full shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all">

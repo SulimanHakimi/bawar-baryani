@@ -26,7 +26,7 @@ export default function Menu() {
     <Layout title="Menu | Bawar Biryani">
       <div className="bg-maroon py-12 text-center text-white">
         <h1 className="text-4xl font-serif font-bold">Our Menu</h1>
-        <p className="mt-4 text-lg text-saffron">Authentic flavors from the heart of Afghanistan</p>
+        <p className="mt-2 text-lg text-saffron">Authentic flavors from the heart of Afghanistan</p>
       </div>
 
       <div className="container-custom py-12">
