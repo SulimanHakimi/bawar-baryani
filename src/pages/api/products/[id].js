@@ -20,8 +20,8 @@ export default async function handler(req, res) {
         res.status(404).json({ message: 'Product not found' });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+      console.error('GET_PRODUCT_ERROR:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
     }
   } else if (method === 'PUT') {
     try {
@@ -32,15 +32,22 @@ export default async function handler(req, res) {
 
       const product = await Product.findById(id);
       if (product) {
-        Object.assign(product, req.body);
+        for (const key in req.body) {
+          if (Object.prototype.hasOwnProperty.call(req.body, key)) {
+            product[key] = req.body[key];
+          }
+        }
         const updatedProduct = await product.save();
         res.status(200).json(updatedProduct);
       } else {
         res.status(404).json({ message: 'Product not found' });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+      console.error('UPDATE_PRODUCT_ERROR:', error);
+      if (error.name === 'ValidationError') {
+        return res.status(400).json({ message: error.message, error: error.errors });
+      }
+      res.status(500).json({ message: 'Server error', error: error.message });
     }
   } else if (method === 'DELETE') {
     try {
@@ -57,8 +64,8 @@ export default async function handler(req, res) {
         res.status(404).json({ message: 'Product not found' });
       }
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Server error' });
+      console.error('DELETE_PRODUCT_ERROR:', error);
+      res.status(500).json({ message: 'Server error', error: error.message });
     }
   } else {
     res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);

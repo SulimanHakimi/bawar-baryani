@@ -18,7 +18,7 @@ export default function AdminDashboard() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get(process.env.API_URL+'/admin/stats', config);
+      const { data } = await axios.get('/api/admin/stats', config);
       setStats(data);
     } catch (error) {
       console.error('Error fetching stats:', error);

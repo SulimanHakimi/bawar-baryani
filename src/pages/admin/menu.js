@@ -32,7 +32,7 @@ export default function AdminMenu() {
 
   const fetchProducts = async () => {
     try {
-      const { data } = await axios.get(process.env.API_URL+'/products');
+      const { data } = await axios.get('/api/products');
       setProducts(data);
       setLoading(false);
     } catch (error) {
@@ -46,7 +46,7 @@ export default function AdminMenu() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.delete(`${process.env.API_URL}/products/${id}`, config);
+      await axios.delete(`/api/products/${id}`, config);
       fetchProducts();
     } catch (error) {
       console.error('Error deleting product:', error);
@@ -67,14 +67,15 @@ export default function AdminMenu() {
 
     try {
       if (isEditing) {
-        await axios.put(`${process.env.API_URL}/products/${currentProduct._id}`, productData, config);
+        await axios.put(`/api/products/${currentProduct._id}`, productData, config);
       } else {
-        await axios.post(process.env.API_URL+'/products', productData, config);
+        await axios.post('/api/products', productData, config);
       }
       fetchProducts();
       resetForm();
     } catch (error) {
       console.error('Error saving product:', error);
+      alert('Error saving product: ' + (error.response?.data?.message || error.message));
     }
   };
 

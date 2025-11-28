@@ -15,7 +15,7 @@ export default function AdminOrders() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get(process.env.API_URL + '/orders', config);
+      const { data } = await axios.get('/api/orders', config);
       const sortedOrders = data.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setOrders(sortedOrders);
       setLoading(false);
@@ -37,7 +37,7 @@ export default function AdminOrders() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      await axios.put(`${process.env.API_URL}/orders/${id}/status`, { status }, config);
+      await axios.put(`/api/orders/${id}/status`, { status }, config);
       fetchOrders();
     } catch (error) {
       console.error('Error updating status:', error);
@@ -61,10 +61,11 @@ export default function AdminOrders() {
           </nav>
         </aside>
 
-        <main className="flex-1 p-8">
-          <h1 className="text-3xl font-bold mb-8">Manage Orders</h1>
+        <main className="flex-1 p-4 md:p-8">
+          <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">Manage Orders</h1>
 
-          <div className="bg-white rounded-xl shadow overflow-hidden overflow-x-auto">
+          {/* Desktop Table View */}
+          <div className="hidden md:block bg-white rounded-xl shadow overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -102,7 +103,7 @@ export default function AdminOrders() {
                           <select
                             value={order.status}
                             onChange={(e) => updateStatus(order._id, e.target.value)}
-                            className="border rounded p-1"
+                            className="border rounded p-1 text-sm"
                           >
                             <option value="pending">Pending</option>
                             <option value="confirmed">Confirmed</option>
@@ -115,7 +116,7 @@ export default function AdminOrders() {
                             href={`/admin/orders/${order._id}`}
                             className="text-blue-600 hover:text-blue-800 underline text-sm"
                           >
-                            View Details
+                            View
                           </Link>
                         </div>
                       </td>
@@ -124,6 +125,63 @@ export default function AdminOrders() {
                 )}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-4">
+            {orders.length === 0 ? (
+              <div className="bg-white rounded-lg shadow p-6 text-center text-gray-500">
+                No orders found.
+              </div>
+            ) : (
+              orders.map((order) => (
+                <div key={order._id} className="bg-white rounded-lg shadow p-4">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <p className="font-bold text-gray-900">#{order._id.substring(0, 8)}</p>
+                      <p className="text-sm text-gray-600">{order.user?.name || 'Unknown'}</p>
+                    </div>
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+                      order.status === 'delivered' ? 'bg-green-100 text-green-800' :
+                      order.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                      'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {order.status}
+                    </span>
+                  </div>
+                  <div className="space-y-2 text-sm mb-3">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Date:</span>
+                      <span className="font-medium">{new Date(order.createdAt).toLocaleDateString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Total:</span>
+                      <span className="font-medium">${order.totalAmount.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <select
+                      value={order.status}
+                      onChange={(e) => updateStatus(order._id, e.target.value)}
+                      className="border rounded p-2 text-sm w-full"
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="preparing">Preparing</option>
+                      <option value="out_for_delivery">Out for Delivery</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                    <Link
+                      href={`/admin/orders/${order._id}`}
+                      className="text-center bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 text-sm"
+                    >
+                      View Details
+                    </Link>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </main>
       </div>

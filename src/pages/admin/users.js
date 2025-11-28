@@ -16,7 +16,7 @@ export default function AdminUsers() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const { data } = await axios.get(`${process.env.API_URL}/admin/users`, config);
+      const { data } = await axios.get('/api/admin/users', config);
       setUsers(data);
       setLoading(false);
     } catch (error) {
@@ -52,10 +52,11 @@ export default function AdminUsers() {
           </nav>
         </aside>
 
-        <main className="flex-1 p-8">
-          <h1 className="text-3xl font-bold mb-8">Manage Users</h1>
+        <main className="flex-1 p-4 md:p-8">
+          <h1 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8">Manage Users</h1>
           
-          <div className="bg-white rounded-xl shadow overflow-hidden overflow-x-auto">
+          {/* Desktop Table View */}
+          <div className="hidden md:block bg-white rounded-xl shadow overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -78,6 +79,41 @@ export default function AdminUsers() {
                 ))}
               </tbody>
             </table>
+          </div>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-4">
+            {users.length === 0 ? (
+              <div className="bg-white rounded-lg shadow p-6 text-center text-gray-500">
+                No users found.
+              </div>
+            ) : (
+              users.map((u) => (
+                <div key={u._id} className="bg-white rounded-lg shadow p-4">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <p className="font-bold text-gray-900">{u.name}</p>
+                      <p className="text-sm text-gray-600">{u.email}</p>
+                    </div>
+                    <span className={`px-2 py-1 text-xs font-semibold rounded-full capitalize ${
+                      u.role === 'admin' ? 'bg-purple-100 text-purple-800' : 'bg-gray-100 text-gray-800'
+                    }`}>
+                      {u.role}
+                    </span>
+                  </div>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Points:</span>
+                      <span className="font-medium">{u.points}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Joined:</span>
+                      <span className="font-medium">{new Date(u.createdAt).toLocaleDateString()}</span>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </main>
       </div>

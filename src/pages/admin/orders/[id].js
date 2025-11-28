@@ -17,8 +17,7 @@ export default function OrderDetails() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const apiUrl = process.env.API_URL || '/api';
-      const { data } = await axios.get(`${apiUrl}/orders/${id}`, config);
+      const { data } = await axios.get(`/api/orders/${id}`, config);
       setOrder(data);
       setLoading(false);
     } catch (error) {
@@ -41,8 +40,7 @@ export default function OrderDetails() {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
-      const apiUrl = process.env.API_URL || '/api';
-      await axios.put(`${apiUrl}/orders/${id}/status`, { status }, config);
+      await axios.put(`/api/orders/${id}/status`, { status }, config);
       fetchOrderDetails();
     } catch (error) {
       console.error('Error updating status:', error);
