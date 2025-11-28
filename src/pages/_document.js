@@ -12,11 +12,23 @@ export default function Document() {
         <link rel="canonical" href="https://bawar-biryani.vercel.app/" />
         
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Bawar Biryani" />
+        <meta property="og:site_name" content="Bawar Biryani-باور بریانی" />
         <meta name="twitter:card" content="summary_large_image" />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        />
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function(c,l,a,r,i,t,y){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "ud655gq2dc");
+            `,
+          }}
         />
         <script
           type="application/ld+json"
@@ -24,8 +36,8 @@ export default function Document() {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Restaurant",
-              "name": "Bawar Biryani",
-              "description": "Authentic Afghani Pashtoon Biryani Restaurant",
+              "name": "Bawar Biryani-باور بریانی",
+              "description": "Authentic Afghani Biryani Restaurant",
               "servesCuisine": "Afghan",
               "priceRange": "$$",
               "address": {
