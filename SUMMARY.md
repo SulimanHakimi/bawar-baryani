@@ -1,4 +1,4 @@
-# 🍛 Bawar Biryani - Deployment Complete!
+#  Bawar Biryani - Deployment Complete!
 
 ##  What Has Been Built
 
