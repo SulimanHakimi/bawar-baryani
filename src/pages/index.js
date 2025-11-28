@@ -85,18 +85,10 @@ export default function Home() {
             {Array.isArray(products) && products.map((product) => (
               <div key={product._id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300">
                 <div className="h-64 bg-gray-200 relative">
-                  <Image
-                    src={(() => {
-                      const url = product.image;
-                      if (!url) return '/images/placeholder.jpg';
-                      if (url.startsWith('http')) return url;
-                      let clean = url.replace(/\\\\/g, '/');
-                      if (!clean.startsWith('/')) clean = '/' + clean;
-                      return clean;
-                    })()}
+                  <img
+                    src={product.image}
                     alt={product.name}
-                    layout="fill"
-                    objectFit="cover"
+                    className="w-full h-full object-cover absolute"
                   />
                 </div>
                 <div className="p-6 flex flex-col">
