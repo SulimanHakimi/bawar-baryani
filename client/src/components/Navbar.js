@@ -33,7 +33,7 @@ const Navbar = ({ cartCount = 0 }) => {
           <Link href="/cart" className="relative hover:text-saffron transition-colors">
             <FaShoppingCart size={20} />
             {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-maroon text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+              <span className="absolute -top-2 -right-2 bg-black text-white rounded-full w-4 h-4 flex items-center justify-center text-xs">
                 {cartCount}
               </span>
             )}
