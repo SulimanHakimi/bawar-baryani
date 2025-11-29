@@ -4,10 +4,14 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
+import Toast from '@/components/Toast';
 
 export default function Home() {
   // ----- Products -----
   const [products, setProducts] = useState([]);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+
   const fetchProducts = useCallback(async () => {
     try {
       const { data } = await axios.get(`${process.env.API_URL}/products`);
@@ -39,6 +43,10 @@ export default function Home() {
     else cart.push({ product: { _id: product._id, name: product.name, price: product.price, image: product.image }, quantity: 1 });
     localStorage.setItem('cart', JSON.stringify(cart));
     window.dispatchEvent(new Event('storage'));
+    
+    // Show toast notification
+    setToastMessage(`${product.name} added to cart!`);
+    setShowToast(true);
   };
 
   // ----- Effects -----
@@ -54,7 +62,13 @@ export default function Home() {
     ));
 
   return (
-    <Layout title="Home | Bawar Biryani">
+    <>
+      <Toast 
+        message={toastMessage} 
+        show={showToast} 
+        onClose={() => setShowToast(false)} 
+      />
+      <Layout title="Home | Bawar Biryani">
       {/* Hero Section */}
       <section className="relative h-[80vh] flex items-center justify-center bg-gray-900 text-white overflow-hidden">
         <div className="absolute inset-0 z-0 opacity-50">
@@ -144,5 +158,6 @@ export default function Home() {
         </div>
       </section>
     </Layout>
+    </>
   );
 }

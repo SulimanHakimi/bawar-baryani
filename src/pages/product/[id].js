@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '@/components/Layout';
+import Toast from '@/components/Toast';
 import axios from 'axios';
 import { FaMinus, FaPlus, FaShoppingCart } from 'react-icons/fa';
 
@@ -10,6 +11,8 @@ export default function ProductDetails() {
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [quantity, setQuantity] = useState(1);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
   const fetchProduct = useCallback(async () => {
     if (!id) return;
@@ -53,6 +56,11 @@ export default function ProductDetails() {
     }
     
     localStorage.setItem('cart', JSON.stringify(cart));
+    window.dispatchEvent(new Event('storage'));
+    
+    // Show toast notification
+    setToastMessage(`${quantity}x ${product.name} added to cart!`);
+    setShowToast(true);
   };
 
 
@@ -60,7 +68,13 @@ export default function ProductDetails() {
   if (!product) return <Layout><div className="text-center py-20">Product not found</div></Layout>;
 
   return (
-    <Layout title={`${product.name} | Bawar Biryani`}>
+    <>
+      <Toast 
+        message={toastMessage} 
+        show={showToast} 
+        onClose={() => setShowToast(false)} 
+      />
+      <Layout title={`${product.name} | Bawar Biryani`}>
       <div className="container-custom py-12 min-h-[80vh] ">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div className="rounded-xl h-96 flex items-center justify-center">
@@ -115,5 +129,6 @@ export default function ProductDetails() {
         </div>
       </div>
     </Layout>
+    </>
   );
 }

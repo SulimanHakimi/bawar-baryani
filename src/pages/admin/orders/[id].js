@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Layout from '@/components/Layout';
+import Toast from '@/components/Toast';
 import { useAuth } from '@/context/AuthContext';
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -12,8 +13,12 @@ export default function OrderDetails() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const { id } = router.query;
+  const [message, setMessage] = useState('');
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
 
-  const fetchOrderDetails = async () => {
+  const fetchOrderDetails = useCallback(async () => {
     try {
       const token = Cookies.get('token');
       const config = { headers: { Authorization: `Bearer ${token}` } };
@@ -23,6 +28,25 @@ export default function OrderDetails() {
     } catch (error) {
       console.error('Error fetching order:', error);
       setLoading(false);
+    }
+  }, [id]);
+
+  const handleSendMessage = async () => {
+    if (!message.trim()) return;
+    setSendingMessage(true);
+    try {
+      const token = Cookies.get('token');
+      const config = { headers: { Authorization: `Bearer ${token}` } };
+      await axios.post(`/api/orders/${id}/message`, { message }, config);
+      setMessage('');
+      setToastMessage('Message sent successfully!');
+      setShowToast(true);
+    } catch (error) {
+      console.error('Error sending message:', error);
+      setToastMessage('Failed to send message');
+      setShowToast(true);
+    } finally {
+      setSendingMessage(false);
     }
   };
 
@@ -55,7 +79,13 @@ export default function OrderDetails() {
   const isGuest = !order.user;
 
   return (
-    <Layout title={`Order #${order._id.substring(0, 8)} | Bawar Biryani`}>
+    <>
+      <Toast 
+        message={toastMessage} 
+        show={showToast} 
+        onClose={() => setShowToast(false)} 
+      />
+      <Layout title={`Order #${order._id.substring(0, 8)} | Bawar Biryani`}>
       <div className="flex min-h-screen bg-gray-100">
         <aside className="w-64 bg-white shadow-md hidden md:block">
           <div className="p-6">
@@ -272,8 +302,29 @@ export default function OrderDetails() {
               <p className="text-gray-700">{order.notes}</p>
             </div>
           )}
+
+          {/* Send Message to Customer */}
+          <div className="bg-white rounded-xl shadow p-6 mt-6">
+            <h2 className="text-xl font-bold mb-4">Send Message to Customer</h2>
+            <div className="space-y-4">
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Write a message to the customer..."
+                className="w-full border rounded p-3 h-32"
+              />
+              <button
+                onClick={handleSendMessage}
+                disabled={sendingMessage || !message.trim()}
+                className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+              >
+                {sendingMessage ? 'Sending...' : 'Send Message'}
+              </button>
+            </div>
+          </div>
         </main>
       </div>
     </Layout>
+    </>
   );
 }

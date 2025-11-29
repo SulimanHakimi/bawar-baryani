@@ -3,6 +3,7 @@ import Order from '../../../models/Order';
 import User from '../../../models/User';
 import { optionalAuth, admin, protect } from '../../../middleware/auth';
 import { runMiddleware } from '../../../lib/runMiddleware';
+import { sendEmail } from '../../../lib/email';
 
 export default async function handler(req, res) {
   const { method } = req;
@@ -64,9 +65,36 @@ export default async function handler(req, res) {
         user.pointsHistory.push({ amount: pointsEarned, reason: 'Order Earned' });
         await user.save();
 
+        // Send email to registered user
+        await sendEmail({
+          to: user.email,
+          subject: `Order Confirmation #${createdOrder._id}`,
+          html: `
+            <h1>Thank you for your order!</h1>
+            <p>Your order #${createdOrder._id} has been placed successfully.</p>
+            <p>Total Amount: ${createdOrder.totalAmount} AFN</p>
+            <p>We will notify you when your order status changes.</p>
+          `
+        });
+
         res.status(201).json(createdOrder);
       } else {
         const createdOrder = await order.save();
+
+        // Send email to guest
+        if (guestInfo && guestInfo.email) {
+          await sendEmail({
+            to: guestInfo.email,
+            subject: `Order Confirmation #${createdOrder._id}`,
+            html: `
+              <h1>Thank you for your order!</h1>
+              <p>Your order #${createdOrder._id} has been placed successfully.</p>
+              <p>Total Amount: ${createdOrder.totalAmount} AFN</p>
+              <p>We will notify you when your order status changes.</p>
+            `
+          });
+        }
+
         res.status(201).json(createdOrder);
       }
     } catch (error) {

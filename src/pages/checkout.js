@@ -25,7 +25,7 @@ export default function Checkout() {
     area: '',
     city: '', 
     province: '',
-    zip: '', 
+    province: '',
     country: 'Afghanistan',
     landmark: '',
     latitude: null,
@@ -74,7 +74,7 @@ export default function Checkout() {
           area: data.address.neighbourhood || data.address.suburb || '',
           city: data.address.city || data.address.town || data.address.village || '',
           province: data.address.state || '',
-          zip: data.address.postcode || '',
+          province: data.address.state || '',
           country: data.address.country || 'Afghanistan',
           latitude,
           longitude
@@ -126,10 +126,10 @@ export default function Checkout() {
         headers: { Authorization: `Bearer ${Cookies.get('token')}` }
       } : {};
 
-      await axios.post(process.env.API_URL+'/orders', orderData, config);
+      const response = await axios.post(process.env.API_URL+'/orders', orderData, config);
       
       localStorage.removeItem('cart');
-      router.push('/');
+      router.push(`/order-confirmation/${response.data._id}`);
     } catch (error) {
       console.error('Order failed:', error);
       alert(error.response?.data?.message || 'Order failed. Please try again.');
@@ -184,40 +184,7 @@ export default function Checkout() {
                 </div>
               )}
 
-              {/* Delivery Type */}
-              <div className="bg-white p-6 rounded-lg border">
-                <h2 className="text-xl font-bold mb-4">Delivery Method</h2>
-                <div className="space-y-3">
-                  <label className="flex items-center p-3 border rounded cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="deliveryType"
-                      value="home_delivery"
-                      checked={deliveryType === 'home_delivery'}
-                      onChange={e => setDeliveryType(e.target.value)}
-                      className="mr-3"
-                    />
-                    <div className="flex-1">
-                      <span className="font-semibold">Home Delivery</span>
-                      <p className="text-sm text-gray-600">Delivered to your doorstep (+30 AFN)</p>
-                    </div>
-                  </label>
-                  <label className="flex items-center p-3 border rounded cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="deliveryType"
-                      value="pickup"
-                      checked={deliveryType === 'pickup'}
-                      onChange={e => setDeliveryType(e.target.value)}
-                      className="mr-3"
-                    />
-                    <div className="flex-1">
-                      <span className="font-semibold">Pickup</span>
-                      <p className="text-sm text-gray-600">Collect from our location (Free)</p>
-                    </div>
-                  </label>
-                </div>
-              </div>
+
 
               {/* Shipping Address */}
               {deliveryType === 'home_delivery' && (
@@ -282,14 +249,7 @@ export default function Checkout() {
                         onChange={e => setAddress({...address, province: e.target.value})}
                       />
                     </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <input
-                        type="text"
-                        placeholder="ZIP Code"
-                        className="w-full border p-3 rounded"
-                        value={address.zip}
-                        onChange={e => setAddress({...address, zip: e.target.value})}
-                      />
+                    <div className="grid grid-cols-1 gap-4">
                       <input
                         type="text"
                         placeholder="Country"
@@ -326,20 +286,6 @@ export default function Checkout() {
                     <div className="flex-1">
                       <span className="font-semibold">Cash on Delivery</span>
                       <p className="text-sm text-gray-600">Pay when you receive your order</p>
-                    </div>
-                  </label>
-                  <label className="flex items-center p-3 border rounded cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="paymentMethod"
-                      value="hesabpay"
-                      checked={paymentMethod === 'hesabpay'}
-                      onChange={e => setPaymentMethod(e.target.value)}
-                      className="mr-3"
-                    />
-                    <div className="flex-1">
-                      <span className="font-semibold">Hesab Pay</span>
-                      <p className="text-sm text-gray-600">Pay securely with Hesab Pay</p>
                     </div>
                   </label>
                 </div>
