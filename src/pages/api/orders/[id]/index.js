@@ -2,19 +2,24 @@ import dbConnect from '../../../../lib/dbConnect';
 import Order from '../../../../models/Order';
 import { protect, admin, optionalAuth } from '../../../../middleware/auth';
 import { runMiddleware } from '../../../../lib/runMiddleware';
+import { cors } from '../../../../middleware/cors';
 
 export default async function handler(req, res) {
+  // Handle CORS
+  const isPreflightHandled = cors(req, res);
+  if (isPreflightHandled) return;
+
   const { query: { id }, method } = req;
   await dbConnect();
 
   if (method === 'GET') {
     try {
       await runMiddleware(req, res, optionalAuth);
-      
+
       const order = await Order.findById(id)
         .populate('user', 'name email phone')
         .populate('items.product', 'name price image');
-      
+
       if (!order) {
         return res.status(404).json({ message: 'Order not found' });
       }

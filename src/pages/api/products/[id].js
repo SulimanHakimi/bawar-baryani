@@ -2,8 +2,13 @@ import dbConnect from '../../../lib/dbConnect';
 import Product from '../../../models/Product';
 import { protect, admin } from '../../../middleware/auth';
 import { runMiddleware } from '../../../lib/runMiddleware';
+import { cors } from '../../../middleware/cors';
 
 export default async function handler(req, res) {
+  // Handle CORS
+  const isPreflightHandled = cors(req, res);
+  if (isPreflightHandled) return;
+
   const {
     query: { id },
     method,

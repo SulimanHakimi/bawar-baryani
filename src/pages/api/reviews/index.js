@@ -3,8 +3,13 @@ import Review from '../../../models/Review';
 import Product from '../../../models/Product';
 import { protect } from '../../../middleware/auth';
 import { runMiddleware } from '../../../lib/runMiddleware';
+import { cors } from '../../../middleware/cors';
 
 export default async function handler(req, res) {
+  // Handle CORS
+  const isPreflightHandled = cors(req, res);
+  if (isPreflightHandled) return;
+
   const { method } = req;
   await dbConnect();
 
@@ -31,7 +36,7 @@ export default async function handler(req, res) {
 
       const product = await Product.findById(productId);
       if (!product) return res.status(404).json({ message: 'Product not found' });
-      
+
       const review = await Review.create({
         user: req.user._id,
         product: productId,

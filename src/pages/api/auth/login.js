@@ -2,12 +2,17 @@ import dbConnect from '../../../lib/dbConnect';
 import User from '../../../models/User';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { cors } from '../../../middleware/cors';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
 export default async function handler(req, res) {
+  // Handle CORS
+  const isPreflightHandled = cors(req, res);
+  if (isPreflightHandled) return;
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);

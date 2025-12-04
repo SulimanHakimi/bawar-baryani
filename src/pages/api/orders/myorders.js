@@ -2,8 +2,13 @@ import dbConnect from '../../../lib/dbConnect';
 import Order from '../../../models/Order';
 import { protect } from '../../../middleware/auth';
 import { runMiddleware } from '../../../lib/runMiddleware';
+import { cors } from '../../../middleware/cors';
 
 export default async function handler(req, res) {
+  // Handle CORS
+  const isPreflightHandled = cors(req, res);
+  if (isPreflightHandled) return;
+
   if (req.method !== 'GET') {
     res.setHeader('Allow', ['GET']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);

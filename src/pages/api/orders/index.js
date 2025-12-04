@@ -4,15 +4,20 @@ import User from '../../../models/User';
 import { optionalAuth, admin, protect } from '../../../middleware/auth';
 import { runMiddleware } from '../../../lib/runMiddleware';
 import { sendEmail } from '../../../lib/email';
+import { cors } from '../../../middleware/cors';
 
 export default async function handler(req, res) {
+  // Handle CORS
+  const isPreflightHandled = cors(req, res);
+  if (isPreflightHandled) return;
+
   const { method } = req;
   await dbConnect();
 
   if (method === 'POST') {
     try {
       await runMiddleware(req, res, optionalAuth);
-      
+
       const {
         items,
         shippingAddress,
